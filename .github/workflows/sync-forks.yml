@@ -9,7 +9,7 @@ on:
         description: '强制同步（会覆盖 fork 上的自定义提交）'
         required: false
         type: boolean
-        default: false
+        default: true
       dry_run:
         description: '仅列出待同步的 fork，不执行同步'
         required: false
