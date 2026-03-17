@@ -174,7 +174,7 @@ if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
       echo ""
       echo "### ✅ 已更新的仓库"
       for item in "${OK_LIST[@]}"; do
-        echo "- `${item}`"
+        echo '- `'"${item}"'`'
       done
     fi
 
