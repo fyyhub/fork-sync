@@ -31,8 +31,8 @@ is_excluded() {
 
 # ─── 获取所有 fork ───
 echo "🔍 正在获取所有 fork 仓库..."
-FORKS_JSON=$(gh repo list --fork --limit 1000 
-  --json nameWithOwner,parent,isArchived 
+FORKS_JSON=$(gh repo list --fork --limit 1000 \
+  --json nameWithOwner,parent,isArchived \
   --jq '[.[] | select(.isArchived == false)]')
 
 TOTAL=$(echo "$FORKS_JSON" | jq 'length')
