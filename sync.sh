@@ -33,7 +33,7 @@ is_excluded() {
 echo "🔍 正在获取所有 fork 仓库..."
 FORKS_JSON=$(gh repo list --fork --limit 1000 \
   --json nameWithOwner,parent,isArchived \
-  --jq '[.[] | select(.isArchived == false)]')
+  --jq '[.[] | select(.isArchived == false) | {nameWithOwner, parentFullName: (if .parent then (.parent.owner.login + "/" + .parent.name) else null end)}]')
 
 TOTAL=$(echo "$FORKS_JSON" | jq 'length')
 echo "📦 发现 ${TOTAL} 个活跃的 fork 仓库"
@@ -56,7 +56,7 @@ declare -a OK_LIST=()
 # ─── 遍历同步 ───
 for i in $(seq 0 $((TOTAL - 1))); do
   REPO=$(echo "$FORKS_JSON" | jq -r ".[$i].nameWithOwner")
-  PARENT=$(echo "$FORKS_JSON" | jq -r ".[$i].parent.nameWithOwner // empty")
+  PARENT=$(echo "$FORKS_JSON" | jq -r ".[$i].parentFullName // empty")
 
   echo "────────────────────────────────────────"
   echo "[$((i + 1))/${TOTAL}] ${REPO}"

@@ -32,6 +32,4 @@ jobs:
       - name: Sync all forks
         run: |
           chmod +x sync.sh
-          ./sync.sh 
-            ${{ inputs.force == true && '--force' || '' }} 
-            ${{ inputs.dry_run == true && '--dry-run' || '' }}
+          ./sync.sh ${{ inputs.force == true && '--force' || '' }} ${{ inputs.dry_run == true && '--dry-run' || '' }}
