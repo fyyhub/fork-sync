@@ -1,0 +1,37 @@
+name: Sync All Forks
+
+on:
+  schedule:
+    - cron: '0 6 * * *' # 每天 UTC 6:00（北京时间 14:00）
+  workflow_dispatch:
+    inputs:
+      force:
+        description: '强制同步（会覆盖 fork 上的自定义提交）'
+        required: false
+        type: boolean
+        default: false
+      dry_run:
+        description: '仅列出待同步的 fork，不执行同步'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.SYNC_PAT }}
+      # 排除的仓库（逗号分隔，填写 owner/repo 格式），例如: "user/repo1,user/repo2"
+      EXCLUDE_REPOS: ""
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync all forks
+        run: |
+          chmod +x sync.sh
+          ./sync.sh 
+            ${{ inputs.force == true && '--force' || '' }} 
+            ${{ inputs.dry_run == true && '--dry-run' || '' }}
